@@ -10,7 +10,14 @@ import {
   Settings,
   Menu,
   X,
-  Zap
+  Zap,
+  FileText,
+  Receipt,
+  Users,
+  Bell,
+  Calendar,
+  Briefcase,
+  HelpCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -21,14 +28,34 @@ const sidebarItems = [
     href: "/",
   },
   {
-    title: "Pricing",
-    icon: CreditCard,
-    href: "/pricing",
-  },
-  {
     title: "Analytics",
     icon: BarChart3,
     href: "/analytics",
+  },
+  {
+    title: "Projects",
+    icon: Briefcase,
+    href: "/projects",
+  },
+  {
+    title: "Transactions",
+    icon: Receipt,
+    href: "/transactions",
+  },
+  {
+    title: "Team",
+    icon: Users,
+    href: "/team",
+  },
+  {
+    title: "Reports",
+    icon: FileText,
+    href: "/reports",
+  },
+  {
+    title: "Calendar",
+    icon: Calendar,
+    href: "/calendar",
   },
   {
     title: "Tables",
@@ -36,9 +63,24 @@ const sidebarItems = [
     href: "/tables",
   },
   {
+    title: "Pricing",
+    icon: CreditCard,
+    href: "/pricing",
+  },
+  {
+    title: "Notifications",
+    icon: Bell,
+    href: "/notifications",
+  },
+  {
     title: "Profile",
     icon: User,
     href: "/profile",
+  },
+  {
+    title: "Help",
+    icon: HelpCircle,
+    href: "/help",
   },
 ];
 
@@ -111,10 +153,13 @@ export function Sidebar({ className }: SidebarProps) {
 
       {/* Footer */}
       <div className="p-4 border-t border-border/20">
-        <div className={cn(
-          "flex items-center gap-3 p-3 rounded-lg bg-gradient-secondary",
-          collapsed && "justify-center"
-        )}>
+        <Link
+          to="/settings"
+          className={cn(
+            "flex items-center gap-3 p-3 rounded-lg bg-gradient-secondary hover:bg-gradient-primary transition-all duration-200",
+            collapsed && "justify-center"
+          )}
+        >
           <Settings className="w-5 h-5 text-muted-foreground" />
           <div className={cn(
             "transition-opacity duration-200",
@@ -123,7 +168,7 @@ export function Sidebar({ className }: SidebarProps) {
             <p className="text-sm font-medium">Settings</p>
             <p className="text-xs text-muted-foreground">Configure your dashboard</p>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
