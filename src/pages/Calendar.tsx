@@ -105,7 +105,7 @@ const Calendar = () => {
   };
 
   const getEventIcon = (type: string) => {
-    const icons: Record<string, any> = {
+    const icons: Record<string, React.ComponentType<{ className?: string }>> = {
       meeting: Users,
       presentation: Briefcase,
       review: CalendarIcon,

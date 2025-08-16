@@ -152,7 +152,7 @@ const Help = () => {
                 <MessageCircle className="w-6 h-6 text-success" />
               </div>
               <div>
-                <p className="text-2xl font-bold gradient-text">< 2hrs</p>
+                <p className="text-2xl font-bold gradient-text">&lt; 2hrs</p>
                 <p className="text-sm text-muted-foreground">Avg Response Time</p>
               </div>
             </div>

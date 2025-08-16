@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Header } from "@/components/layout/Header";
+import { AnimatedNumber } from "@/components/dashboard/AnimatedNumber";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { ChartCard } from "@/components/dashboard/ChartCard";
 import {
@@ -44,6 +46,7 @@ const pieData = [
 ];
 
 const Dashboard = () => {
+  const [activeSlice, setActiveSlice] = useState<string | null>(null);
   return (
     <div className="space-y-6">
       <Header 
@@ -52,12 +55,12 @@ const Dashboard = () => {
       />
 
       {/* Hero Section */}
-      <div className="relative rounded-2xl overflow-hidden">
+    <div className="relative rounded-2xl overflow-hidden">
         <div 
-          className="h-48 bg-cover bg-center"
+      className="h-48 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroImage})` }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/80 to-transparent animate-[pulse_6s_ease-in-out_infinite]" />
           <div className="relative h-full flex items-center p-8">
             <div>
               <h2 className="text-3xl font-bold gradient-text mb-2">
@@ -75,28 +78,28 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
           title="Today's Money"
-          value="$53,000"
+          value={<AnimatedNumber value={53000} prefix="$" className="text-2xl font-bold gradient-text" />}
           change="+55%"
           changeType="positive"
           icon={<DollarSign className="w-6 h-6 text-primary-foreground" />}
         />
         <MetricCard
           title="Today's Users"
-          value="2,300"
+          value={<AnimatedNumber value={2300} className="text-2xl font-bold gradient-text" />}
           change="+3%"
           changeType="positive"
           icon={<Users className="w-6 h-6 text-primary-foreground" />}
         />
         <MetricCard
           title="New Clients"
-          value="3,462"
+          value={<AnimatedNumber value={3462} className="text-2xl font-bold gradient-text" />}
           change="-2%"
           changeType="negative"
           icon={<ShoppingCart className="w-6 h-6 text-primary-foreground" />}
         />
         <MetricCard
           title="Total Sales"
-          value="$103,430"
+          value={<AnimatedNumber value={103430} prefix="$" className="text-2xl font-bold gradient-text" />}
           change="+5%"
           changeType="positive"
           icon={<TrendingUp className="w-6 h-6 text-primary-foreground" />}
@@ -135,6 +138,7 @@ const Dashboard = () => {
                 stroke="hsl(195 100% 50%)"
                 strokeWidth={3}
                 fill="url(#salesGradient)"
+                isAnimationActive
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -154,7 +158,7 @@ const Dashboard = () => {
                   borderRadius: "8px"
                 }}
               />
-              <Bar dataKey="value" fill="hsl(195 100% 50%)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="value" fill="hsl(195 100% 50%)" radius={[4, 4, 0, 0]} isAnimationActive />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -171,9 +175,15 @@ const Dashboard = () => {
                 outerRadius={80}
                 paddingAngle={5}
                 dataKey="value"
+                onMouseEnter={(_, index) => setActiveSlice(pieData[index].name)}
+                onMouseLeave={() => setActiveSlice(null)}
               >
                 {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={entry.color}
+                    opacity={activeSlice && activeSlice !== entry.name ? 0.4 : 1}
+                  />
                 ))}
               </Pie>
               <Tooltip
@@ -186,16 +196,23 @@ const Dashboard = () => {
             </PieChart>
           </ResponsiveContainer>
           <div className="flex justify-center gap-4 mt-4">
-            {pieData.map((entry, index) => (
-              <div key={entry.name} className="flex items-center gap-2">
-                <div 
+            {pieData.map((entry) => (
+              <button
+                key={entry.name}
+                className={`flex items-center gap-2 px-2 py-1 rounded-md transition-colors ${
+                  activeSlice === entry.name ? "bg-primary/10" : "hover:bg-muted/10"
+                }`}
+                onMouseEnter={() => setActiveSlice(entry.name)}
+                onMouseLeave={() => setActiveSlice(null)}
+              >
+                <div
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: entry.color }}
                 />
                 <span className="text-sm text-muted-foreground">
                   {entry.name} ({entry.value}%)
                 </span>
-              </div>
+              </button>
             ))}
           </div>
         </ChartCard>
@@ -203,19 +220,25 @@ const Dashboard = () => {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="card-glass p-6 text-center">
+        <div className="card-glass p-6 text-center glow-hover transition-transform">
           <Activity className="w-8 h-8 text-primary mx-auto mb-3" />
-          <h3 className="text-lg font-semibold mb-1">95%</h3>
+          <h3 className="text-lg font-semibold mb-1">
+            <AnimatedNumber value={95} suffix="%" />
+          </h3>
           <p className="text-sm text-muted-foreground">Satisfaction Rate</p>
         </div>
         <div className="card-glass p-6 text-center">
           <Target className="w-8 h-8 text-success mx-auto mb-3" />
-          <h3 className="text-lg font-semibold mb-1">1,465</h3>
+          <h3 className="text-lg font-semibold mb-1">
+            <AnimatedNumber value={1465} />
+          </h3>
           <p className="text-sm text-muted-foreground">Referral Tracking</p>
         </div>
         <div className="card-glass p-6 text-center">
           <TrendingUp className="w-8 h-8 text-warning mx-auto mb-3" />
-          <h3 className="text-lg font-semibold mb-1">9.3</h3>
+          <h3 className="text-lg font-semibold mb-1">
+            <AnimatedNumber value={9.3} decimals={1} />
+          </h3>
           <p className="text-sm text-muted-foreground">Safety Score</p>
         </div>
       </div>

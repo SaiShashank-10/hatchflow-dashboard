@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface MetricCardProps {
   title: string;
-  value: string;
+  value: ReactNode;
   change?: string;
   changeType?: "positive" | "negative" | "neutral";
   icon: ReactNode;

@@ -98,7 +98,7 @@ const Notifications = () => {
   });
 
   const getNotificationIcon = (type: string) => {
-    const icons: Record<string, any> = {
+    const icons: Record<string, React.ComponentType<{ className?: string }>> = {
       success: CheckCircle,
       error: AlertTriangle,
       warning: AlertTriangle,
@@ -118,7 +118,7 @@ const Notifications = () => {
   };
 
   const getCategoryIcon = (category: string) => {
-    const icons: Record<string, any> = {
+    const icons: Record<string, React.ComponentType<{ className?: string }>> = {
       financial: DollarSign,
       team: Users,
       project: Bell,
